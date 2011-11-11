@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export PATH=/usr/bin:/bin
+export DISPLAY=:0
 
 cd $( dirname $0 )
 
