@@ -1,14 +1,16 @@
 #!/bin/bash
 
+output_dir="/home/dagar/Documents/Photos/Other/thinkpad"
 extra=""
 if [ -n "$1" ]; then
     extra=" ($1)"
 fi
 
+cd /tmp
 # grab 12 frames and use the 11th one because the camera seems to need to warm up
 # or something and just outputs fully green images
-/usr/bin/mplayer -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 12 -vo png
-mv 00000011.png "$( printf '%s%s.png' "$( date +'%Y-%m-%d %T' )" "$extra" )"
+/usr/bin/mplayer -quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo png
+
+mkdir -p "$( printf '%s/%s' "$output_dir" "$( date +'%Y-%m' )")"
+mv 00000047.png "$( printf '%s/%s/%s%s.png' "$output_dir" "$( date +'%Y-%m' )" "$( date +'%Y-%m-%dT%T' )" "$extra" )"
 rm 000000*.png
-
-

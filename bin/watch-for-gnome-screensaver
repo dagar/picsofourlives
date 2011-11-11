@@ -1,60 +1,52 @@
-#!/usr/bin/perl
+#!/usr/bin/env python
+"""
+Used to take a webcam image when the gnome screensaver is locked or unlocked
 
-use strict;
-use warnings;
-use POSIX qw(:sys_wait_h strftime);
+Requires mplayer
+"""
 
-my $locked = 0;
-my $picpid = 0;
-my $cmd = "dbus-monitor --session \"type='signal',interface='org.gnome.ScreenSaver',member='ActiveChanged'\"";
+import dbus
+import gobject
+from dbus.mainloop.glib import DBusGMainLoop
+import subprocess
+import time
+import datetime
+import random
 
+def main():
+    """
+    Setup dbus and gobject loop.
+    """
 
-$SIG{'CHLD'} = 'IGNORE';
+    DBusGMainLoop(set_as_default = True)
 
-$SIG{'HUP'} = sub {
-    $picpid = 0;
-    print localtime().": child told me it died\n";
-};
+    bus = dbus.SessionBus()
+    mainloop = gobject.MainLoop()
 
-sub sleep_and_take_picture {
-    my $ppid = shift;
-    $0 = "pic taker";
-    sleep(10+int(rand(50)));
-    print localtime().": taking pic\n";
-    kill HUP => $ppid;
-    system("bin/take-picture");
-    exit(0);
-}
+    bus.add_signal_receiver(change, 'ActiveChanged', 'org.gnome.ScreenSaver')
 
-open (IN, "$cmd |");
+    mainloop.run()
 
-while (<IN>) {
-    if (m/^\s+boolean true/) {
-        if (!$locked) {
-            print localtime().": locked\n";
-            $locked = 1;
-            if ($picpid) {
-                print localtime().": killing child $picpid\n";
-                kill 9 => $picpid;
-                $picpid = 0;
-            }
-        }
-    } elsif (m/^\s+boolean false/) {
-        if ($locked) {
-            my $me = $$;
-            if ($picpid) {
-                print localtime().": killing child $picpid\n";
-                kill 9 => $picpid;
-                $picpid = 0;
-            }
-            if (!($picpid = fork)) {
-                &sleep_and_take_picture($me);
-            }
-            print localtime().": unlocked\n";
-            $locked = 0;
-        }
-    } else {
-        print localtime().": $_";
-    }
-}
+def change(state):
+    """
+    Triggered by dbus when state changes.
+    """
 
+    # gnome screensaver locked
+    if state == 1:
+        print "locked"
+    else:
+        print "unlocked"
+        take_picture()
+
+def take_picture():
+    """ calls external command that uses mplayer to take a picture
+        with the webcam
+    """
+
+    #time.sleep(10 + 50 * random.random())
+    print datetime.datetime.now(), "taking picture"
+    subprocess.Popen(["./take-picture"])
+
+if __name__ == "__main__":
+    main()
