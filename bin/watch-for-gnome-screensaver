@@ -44,9 +44,9 @@ def take_picture():
         with the webcam
     """
 
-    #time.sleep(10 + 50 * random.random())
+    time.sleep(10 + 50 * random.random())
     print datetime.datetime.now(), "taking picture"
-    subprocess.Popen(["./take-picture"])
+    subprocess.Popen(["bin/take-picture"])
 
 if __name__ == "__main__":
     main()
