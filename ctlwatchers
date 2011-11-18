@@ -8,10 +8,10 @@ cd $( dirname $0 )
 isrunning() {
     local bn="$1"
     echo -n "$bn: "
-    if [ -s "run/$bn.pid" -a -e /proc/$( cat "run/$bn.pid" )/cmdline ]; then
-        cat /proc/$( cat "run/$bn.pid" )/cmdline | grep -q "$bn"
+    if [ -s "/tmp/picsofourlives/$bn.pid" -a -e /proc/$( cat "/tmp/picsofourlives/$bn.pid" )/cmdline ]; then
+        cat /proc/$( cat "/tmp/picsofourlives/$bn.pid" )/cmdline | grep -q "$bn"
         if [ $? -eq 0 ]; then
-            echo "running (pid $( cat "run/$bn.pid" ))"
+            echo "running (pid $( cat "/tmp/picsofourlives/$bn.pid" ))"
             return 0
         fi
     fi
@@ -26,8 +26,9 @@ case "$1" in
             bn=$( basename "$watcher" )
             if ! isrunning "$bn" >/dev/null 2>&1 ; then
                 echo "$bn starting"
-                nohup $watcher >> run/log.out 2>&1 &
-                echo $! > "run/$bn.pid"
+                mkdir -p /tmp/picsofourlives
+                nohup $watcher >> /tmp/picsofourlives/log.out 2>&1 &
+                echo $! > "/tmp/picsofourlives/$bn.pid"
                 disown
             else
                 echo "$bn already running"
@@ -39,14 +40,15 @@ case "$1" in
         for watcher in bin/watch-for-*; do
             bn=$( basename "$watcher" )
             echo "$bn starting"
-            nohup $watcher >> run/log.out 2>&1 &
-            echo $! > "run/$bn.pid"
+            mkdir -p /tmp/picsofourlives
+            nohup $watcher >> /tmp/picsofourlives/log.out 2>&1 &
+            echo $! > "/tmp/picsofourlives/$bn.pid"
             disown
         done
         ;;
 
     stop )
-        for pidfile in run/*.pid; do
+        for pidfile in /tmp/picsofourlives/*.pid; do
             if [ -s "$pidfile" ]; then
                 bn=$( basename "$pidfile" .pid )
                 echo "$bn stopping"

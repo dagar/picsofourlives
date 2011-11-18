@@ -9,8 +9,8 @@ fi
 cd /tmp
 # grab 48 frames and use the 47th one because the camera seems to need to warm up
 # or something and just outputs fully green images
-/usr/bin/mplayer -quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo png
+/usr/bin/mplayer -quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo jpeg
 
 mkdir -p "$( printf '%s/%s' "$output_dir" "$( date +'%Y-%m' )")"
-mv 00000047.png "$( printf '%s/%s/%s%s.png' "$output_dir" "$( date +'%Y-%m' )" "$( date +'%Y-%m-%dT%T' )" "$extra" )"
-rm 000000*.png
+mv 00000047.jpg "$( printf '%s/%s/%s%s.jpg' "$output_dir" "$( date +'%Y-%m' )" "$( date +'%Y-%m-%dT%T' )" "$extra" )"
+rm 000000*.jpg
