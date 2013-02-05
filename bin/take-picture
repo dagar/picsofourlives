@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output_dir="/home/dagar/Documents/Photos/Other/webcam/"
+output_dir="/home/dagar/Dropbox/Photos/Me/webcam/"
 extra=""
 if [ -n "$1" ]; then
     extra=" ($1)"

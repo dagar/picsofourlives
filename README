@@ -36,6 +36,6 @@ where the latter form is used if bin/take-picture is passed arguments to be the
 I usually start it manually when I first login, but you can put something like
 the following in your crontab:
 
-*/5 * * * * /path/to/picsofourlives/ctlwatchers start-if-not-running > /dev/null 2>&1
+*/5 * * * * /home/dagar/Dropbox/Documents/Projects/picsofourlives/ctlwatchers start-if-not-running > /dev/null 2>&1
 
 which will attempt to start it every 5 minutes.
