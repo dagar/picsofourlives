@@ -1,17 +1,14 @@
 #!/bin/bash
 
-output_dir="/home/dagar/Dropbox/Photos/Me/webcam/"
-extra=""
-if [ -n "$1" ]; then
-    extra=" ($1)"
-fi
+output_dir="$HOME/Dropbox/Photos/Me/webcam"
+output_dir_month="$(date +'%Y-%m')"
+tmp_dir="/tmp"
 
-cd /tmp
+cd $tmp_dir
 # grab 48 frames and use the 47th one because the camera seems to need to warm up
 # or something and just outputs fully green images
-/usr/bin/mplayer -quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo jpeg
+/usr/bin/mplayer -really-quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo jpeg
 
-mkdir -p "$( printf '%s/%s' "$output_dir" "$( date +'%Y-%m' )")"
-jhead -mkexif 00000047.jpg
-mv 00000047.jpg "$( printf '%s/%s/%s%s.jpg' "$output_dir" "$( date +'%Y-%m' )" "$( date +'%Y-%m-%d %H.%M.%S' )" "$extra" )"
+mkdir -p "$output_dir/$output_dir_month"
+jhead -mkexif -ft -n"$output_dir/$output_dir_month/%Y-%m-%d %H.%M.%S" 00000047.jpg
 rm 000000*.jpg
