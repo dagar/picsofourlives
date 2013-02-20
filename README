@@ -6,7 +6,7 @@ Requirements:
   bash
   mplayer
   jhead
-  a working v4l2 compatible webcam (test with the bin/cam-view script)
+  a working v4l2 compatible webcam
 
 bin/watch-for-gnome-screensaver
   this will take a picture at some within a minute after the screensaver is unlocked.
