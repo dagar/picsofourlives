@@ -1,17 +1,15 @@
 https://github.com/dagar/picsofourlives
 
-These scripts take pictures from your webcam when certain events are detected.
+These scripts take your picture when you unlock your computer.
 
 Requirements:
   bash
-  python
   mplayer
+  jhead
   a working v4l2 compatible webcam (test with the bin/cam-view script)
 
 bin/watch-for-gnome-screensaver
-  if you use gnome-screensaver, this will take a picture at some random time within
-  a minute after the screensaver is deactivated.  This way it almost
-  guarantees that you'll be at the computer when a picture is taken.
+  this will take a picture at some within a minute after the screensaver is unlocked.
 
 Control with
     ctlwatchers start
@@ -33,9 +31,8 @@ The image files will be named
 where the latter form is used if bin/take-picture is passed arguments to be the
 "extra text".
 
-I usually start it manually when I first login, but you can put something like
-the following in your crontab:
+Put something like the following in your crontab:
 
-*/5 * * * * /home/dagar/Dropbox/Documents/Projects/picsofourlives/ctlwatchers start-if-not-running > /dev/null 2>&1
+*/5 * * * * /home/dagar/Dropbox/Projects/picsofourlives/ctlwatchers start-if-not-running > /dev/null 2>&1
 
 which will attempt to start it every 5 minutes.
