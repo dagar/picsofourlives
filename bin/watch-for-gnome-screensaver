@@ -13,12 +13,13 @@ import time
 import datetime
 import random
 
+
 def main():
     """
     Setup dbus and gobject loop.
     """
 
-    DBusGMainLoop(set_as_default = True)
+    DBusGMainLoop(set_as_default=True)
 
     bus = dbus.SessionBus()
     mainloop = gobject.MainLoop()
@@ -26,6 +27,7 @@ def main():
     bus.add_signal_receiver(change, 'ActiveChanged', 'org.gnome.ScreenSaver')
 
     mainloop.run()
+
 
 def change(state):
     """
@@ -38,6 +40,7 @@ def change(state):
     else:
         print "unlocked"
         take_picture()
+
 
 def take_picture():
     """ calls external command that uses mplayer to take a picture
