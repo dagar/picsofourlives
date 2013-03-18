@@ -2,13 +2,13 @@
 """
 Used to take a webcam image when the gnome screensaver is locked or unlocked
 
-Requires mplayer
+Requires streamer and jhead
 """
 
 import dbus
 import gobject
 from dbus.mainloop.glib import DBusGMainLoop
-import subprocess
+import os
 import time
 import datetime
 import random
@@ -43,13 +43,13 @@ def change(state):
 
 
 def take_picture():
-    """ calls external command that uses mplayer to take a picture
-        with the webcam
+    """
+    calls external command to take a picture with the webcam
     """
 
     time.sleep(10 + 50 * random.random())
     print datetime.datetime.now(), "taking picture"
-    subprocess.Popen(["bin/take-picture"])
+    os.system("/home/dagar/Dropbox/Projects/picsofourlives/bin/take-picture")
 
 if __name__ == "__main__":
     main()

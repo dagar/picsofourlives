@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 
 output_dir="$HOME/Dropbox/Photos/Me/webcam"
 output_dir_month="$(date +'%Y-%m')"
@@ -7,8 +7,9 @@ tmp_dir="/tmp"
 cd $tmp_dir
 # grab 48 frames and use the 47th one because the camera seems to need to warm up
 # or something and just outputs fully green images
-/usr/bin/mplayer -really-quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo jpeg
+#mplayer -really-quiet -tv driver=v4l2:width=640:height=480:device=/dev/video0:fps=60 tv:// -frames 48 -vo jpeg
+streamer -q -c /dev/video0 -s640x480 -t 30 -r 10 -b 16 -o "$tmp_dir/webcam00.jpeg"
 
 mkdir -p "$output_dir/$output_dir_month"
-jhead -mkexif -ft -n"$output_dir/$output_dir_month/%Y-%m-%d %H.%M.%S" 00000047.jpg
-rm 000000*.jpg
+jhead -mkexif -ft -n"$output_dir/$output_dir_month/%Y-%m-%d %H.%M.%S" webcam29.jpeg
+rm $tmp_dir/webcam*.jpeg
