@@ -21,29 +21,18 @@ isrunning() {
 
 case "$1" in
 
-    start-if-not-running )
+    start )
         for watcher in bin/watch-for-*; do
             bn=$( basename "$watcher" )
             if ! isrunning "$bn" >/dev/null 2>&1 ; then
                 echo "$bn starting"
                 mkdir -p /tmp/picsofourlives
-                nohup $watcher >> /tmp/picsofourlives/log.out 2>&1 &
+                $watcher &> /tmp/picsofourlives/log.out &
                 echo $! > "/tmp/picsofourlives/$bn.pid"
                 disown
             else
                 echo "$bn already running"
             fi
-        done
-        ;;
-
-    start )
-        for watcher in bin/watch-for-*; do
-            bn=$( basename "$watcher" )
-            echo "$bn starting"
-            mkdir -p /tmp/picsofourlives
-            nohup $watcher >> /tmp/picsofourlives/log.out 2>&1 &
-            echo $! > "/tmp/picsofourlives/$bn.pid"
-            disown
         done
         ;;
 
@@ -72,7 +61,7 @@ case "$1" in
         ;;
 
     * )
-        echo "$0 [start|stop|status|restart|start-if-not-running|help]" >&2 
+        echo "$0 [start|stop|status|restart|help]" >&2 
         ;;
 
 esac

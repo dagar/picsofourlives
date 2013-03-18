@@ -36,9 +36,9 @@ def change(state):
 
     # gnome screensaver locked
     if state == 1:
-        print "locked"
+        print datetime.datetime.now(), "locked"
     else:
-        print "unlocked"
+        print datetime.datetime.now(), "unlocked"
         take_picture()
 
 
@@ -46,8 +46,9 @@ def take_picture():
     """
     calls external command to take a picture with the webcam
     """
-
-    time.sleep(10 + 50 * random.random())
+    delay = 10 + 50 * random.random()
+    print datetime.datetime.now(), "waiting", delay
+    time.sleep(delay)
     print datetime.datetime.now(), "taking picture"
     os.system("/home/dagar/Dropbox/Projects/picsofourlives/bin/take-picture")
 

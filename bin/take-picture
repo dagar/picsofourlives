@@ -11,5 +11,5 @@ cd $tmp_dir
 streamer -q -c /dev/video0 -s640x480 -t 30 -r 10 -b 16 -o "$tmp_dir/webcam00.jpeg"
 
 mkdir -p "$output_dir/$output_dir_month"
-jhead -mkexif -ft -n"$output_dir/$output_dir_month/%Y-%m-%d %H.%M.%S" webcam29.jpeg
+jhead -q -mkexif -ft -n"$output_dir/$output_dir_month/%Y-%m-%d %H.%M.%S" webcam29.jpeg
 rm $tmp_dir/webcam*.jpeg
